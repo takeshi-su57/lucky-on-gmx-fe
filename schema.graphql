@@ -1,0 +1,1003 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type AccPnl {
+  date: DateTime!
+  in: Float!
+  inOut: Float!
+  out: Float!
+  pnl: Float!
+  positionCount: Int!
+  taskCount: Int!
+  traderCount: Int!
+}
+
+type AccessToken {
+  accessToken: String!
+}
+
+type Action {
+  args: String!
+  blockNumber: Int!
+  createdAt: DateTime!
+  id: Int!
+  name: String!
+  orderInBlock: Int!
+  positionId: Int!
+}
+
+input AddUserInput {
+  address: String!
+}
+
+type BotBackwardDetails {
+  endedAt: DateTime
+  follower: Follower!
+  followerAddress: String!
+  followerContract: Contract!
+  followerContractId: Int!
+  followerEndedBlock: Int
+  followerStartedBlock: Int
+  id: Int!
+  leaderAddress: String!
+  leaderCollateralBaseline: Int!
+  leaderContract: Contract!
+  leaderContractId: Int!
+  leaderEndedBlock: Int
+  leaderStartedBlock: Int
+  plan: Plan!
+  planId: Int!
+  startedAt: DateTime
+  status: BotStatus!
+  strategy: Strategy!
+  strategyId: Int!
+}
+
+type BotConnection {
+  edges: [BotEdge!]!
+  pageInfo: BotPageInfo!
+}
+
+type BotCount {
+  botCount: Int!
+  date: DateTime!
+}
+
+type BotDetails {
+  endedAt: DateTime
+  follower: Follower!
+  followerAddress: String!
+  followerContract: Contract!
+  followerContractId: Int!
+  followerEndedBlock: Int
+  followerStartedBlock: Int
+  id: Int!
+  leaderAddress: String!
+  leaderCollateralBaseline: Int!
+  leaderContract: Contract!
+  leaderContractId: Int!
+  leaderEndedBlock: Int
+  leaderStartedBlock: Int
+  planId: Int!
+  startedAt: DateTime
+  status: BotStatus!
+  strategy: Strategy!
+  strategyId: Int!
+}
+
+type BotEdge {
+  cursor: Int!
+  node: BotForwardDetails!
+}
+
+type BotForwardDetails {
+  endedAt: DateTime
+  follower: Follower!
+  followerAddress: String!
+  followerContract: Contract!
+  followerContractId: Int!
+  followerEndedBlock: Int
+  followerStartedBlock: Int
+  id: Int!
+  leaderAddress: String!
+  leaderCollateralBaseline: Int!
+  leaderContract: Contract!
+  leaderContractId: Int!
+  leaderEndedBlock: Int
+  leaderStartedBlock: Int
+  missions: [MissionForwardDetails!]!
+  planId: Int!
+  startedAt: DateTime
+  status: BotStatus!
+  strategy: Strategy!
+  strategyId: Int!
+}
+
+type BotPageInfo {
+  endCursor: Int
+  hasNextPage: Boolean!
+}
+
+enum BotStatus {
+  Created
+  Dead
+  Live
+  Stop
+}
+
+input CancelOrderAfterTimeoutInput {
+  address: String!
+  contractId: Int!
+  index: Int!
+}
+
+input ChangeUserTagInput {
+  address: String!
+  tag: String!
+}
+
+input CloseTradeInput {
+  address: String!
+  contractId: Int!
+  index: Int!
+  pairIndex: Int!
+}
+
+type Contract {
+  address: String!
+  backendUrl: String
+  chainId: Int!
+  description: String!
+  id: Int!
+  isTestnet: Boolean!
+  status: ContractStatus!
+}
+
+type ContractExecutionResult {
+  address: String!
+  contractId: Int!
+  index: Int!
+  message: String!
+  success: Boolean!
+}
+
+enum ContractStatus {
+  Dead
+  Live
+}
+
+input CreateBotAndStrategyInput {
+  followerContractId: Int!
+  leaderAddress: String!
+  leaderCollateralBaseline: Int!
+  leaderContractId: Int!
+  planId: Int!
+  strategy: CreateStrategyInput!
+}
+
+input CreateBotInput {
+  followerAddress: String!
+  followerContractId: Int!
+  leaderAddress: String!
+  leaderCollateralBaseline: Int!
+  leaderContractId: Int!
+  planId: Int!
+  strategyId: Int!
+}
+
+input CreatePlanInput {
+  description: String!
+  scheduledEnd: DateTime!
+  scheduledStart: DateTime!
+  title: String!
+}
+
+input CreateStrategyInput {
+  collateralBaseline: Int!
+  lifeTime: Float!
+  maxCollateral: Float!
+  maxLeverage: Int!
+  minCollateral: Float!
+  minLeverage: Int!
+  params: String!
+  ratio: Float!
+  strategyKey: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input ExportFilter {
+  closePositionCountsByPnlSnapshotKind: String!
+  maxR2: Float!
+  maxSlope: Float!
+  minR2: Float!
+  minSlope: Float!
+  recentTradedDays: Int!
+}
+
+input ExportFilterV2 {
+  maxSlope: Float!
+  minSlope: Float!
+  r2MinsByPnlSnapshotKind: String!
+}
+
+input ExportFilterV3 {
+  maxCount: Float!
+  maxSize: Float!
+  minCount: Float!
+  minR2: Float!
+  minSize: Float!
+}
+
+input ExportFilterV5 {
+  m: Int!
+  minR2: Float!
+  minScore: Float!
+  n: Float!
+  window: Int!
+}
+
+type Follower {
+  accountIndex: Int!
+  address: String!
+  publicKey: String!
+  userId: String!
+}
+
+type FollowerActionDetails {
+  action: Action!
+  actionId: Int!
+  id: Int!
+  taskId: Int!
+}
+
+type FollowerDetail {
+  accountIndex: Int!
+  address: String!
+  contractId: Int!
+  ethBalance: String
+  pnlSnapshots: [PnlSnapshot!]!
+  publicKey: String!
+  usdcBalance: String
+  userId: String!
+}
+
+type FollowerPendingOrder {
+  address: String!
+  index: Int!
+  params: String!
+}
+
+type FollowerTrade {
+  address: String!
+  index: Int!
+  mission: Mission
+  params: String!
+}
+
+input GetUserByAddressInput {
+  address: String!
+}
+
+input GetUserTransactionCountsInput {
+  address: String!
+  contractId: Int!
+  endedAt: DateTime
+  startedAt: DateTime
+}
+
+type Log {
+  checked: Boolean!
+  details: String
+  id: Int!
+  severity: LogSeverity!
+  summary: String!
+  timestamp: DateTime!
+}
+
+enum LogSeverity {
+  Alert
+  Critical
+  Debug
+  Default
+  Emergency
+  Error
+  Info
+  Notice
+  Warning
+}
+
+type LogsConnection {
+  edges: [LogsEdge!]!
+  pageInfo: LogsPageInfo!
+}
+
+type LogsEdge {
+  cursor: Int!
+  node: Log!
+}
+
+type LogsPageInfo {
+  endCursor: Int
+  hasNextPage: Boolean!
+}
+
+type Mission {
+  achievePositionId: Int
+  botId: Int!
+  createdAt: DateTime!
+  id: Int!
+  status: MissionStatus!
+  targetPositionId: Int!
+  updatedAt: DateTime!
+}
+
+type MissionBackwardDetails {
+  achievePosition: Position
+  achievePositionId: Int
+  bot: BotBackwardDetails!
+  botId: Int!
+  createdAt: DateTime!
+  id: Int!
+  status: MissionStatus!
+  targetPosition: Position!
+  targetPositionId: Int!
+  updatedAt: DateTime!
+}
+
+type MissionForwardDetails {
+  achievePosition: Position
+  achievePositionId: Int
+  botId: Int!
+  createdAt: DateTime!
+  id: Int!
+  status: MissionStatus!
+  targetPosition: Position!
+  targetPositionId: Int!
+  tasks: [TaskForwardDetails!]!
+  updatedAt: DateTime!
+}
+
+type MissionShallowBackwardDetails {
+  achievePosition: Position
+  achievePositionId: Int
+  bot: BotDetails!
+  botId: Int!
+  createdAt: DateTime!
+  id: Int!
+  status: MissionStatus!
+  targetPosition: Position!
+  targetPositionId: Int!
+  updatedAt: DateTime!
+}
+
+enum MissionStatus {
+  Closed
+  Closing
+  Created
+  Ignored
+  Opened
+  Opening
+}
+
+type Mutation {
+  addTagToWalletAccount(input: ChangeUserTagInput!): WalletAccount!
+  addWalletAccount(input: AddUserInput!): WalletAccount!
+  allowAuto(address: String!, allowAuto: Boolean!, budget: Float!, followerContractId: Int!, ratio: Float!): User!
+  autoTesting(startDate: String!): Boolean!
+  batchCreateBots(input: [CreateBotAndStrategyInput!]!): [BotBackwardDetails!]!
+  buildPnlSnapshots(dateStr: String!, isForceBuild: Boolean!): PnlSnapshotInitializedFlag
+  cancelOrderAfterTimeout(input: CancelOrderAfterTimeoutInput!): ContractExecutionResult!
+  changePassword(newPassword: String!, oldPassword: String!): Boolean!
+  changeUserPermission(address: String!, permission: String!): User!
+  checkLog(id: Int!): Log!
+  closeMission(id: Int!, isForce: Boolean!): Boolean!
+  closeTradeMarket(input: CloseTradeInput!): ContractExecutionResult!
+  createAutoPlan: Boolean!
+  createBot(input: CreateBotInput!): BotBackwardDetails!
+  createPlan(createPlanInput: CreatePlanInput!): Plan!
+  deleteBot(id: Int!): BotBackwardDetails!
+  deleteCategory(id: Int!): TagCategory!
+  deletePlan(id: Int!): Int!
+  deleteTag(tag: String!): Tag!
+  dynamicSnapshotBuild(dateStr: String!): PnlSnapshotInitializedFlag
+  endPlan(id: Int!): Boolean!
+  generateNewFollower: Follower!
+  getToken(signature: String!, timestamp: String!, walletAddress: String!): AccessToken!
+  ignoreMission(id: Int!): Boolean!
+  initializePnlSnapshot(beginingDate: DateTime!, isForceBuild: Boolean!): Boolean!
+  liveBot(id: Int!): Boolean!
+  makeSafeApp(password: String!): Boolean!
+  pauseSystem: Boolean!
+  performTask(id: Int!): Boolean!
+  removeTagFromWalletAccount(input: ChangeUserTagInput!): WalletAccount!
+  resumeSystem(password: String): Boolean!
+  startPlan(id: Int!): Boolean!
+  stopBot(id: Int!): Boolean!
+  stopTask(id: Int!): Boolean!
+  updatePlan(updatePlanInput: UpdatePlanInput!): Plan!
+  upsertCategory(input: TagCategoryInput!): TagCategory!
+  upsertTag(input: TagInput!): Tag!
+  withdrawAllETH(input: WithdrawAllInput!): Boolean!
+  withdrawAllUSDC(input: WithdrawAllInput!): Boolean!
+  withdrawETHToUser(amount: Float!, contractId: Int!): Boolean!
+  withdrawUSDCToUser(amount: Float!, contractId: Int!): Boolean!
+}
+
+type Plan {
+  description: String!
+  endedAt: DateTime
+  id: Int!
+  scheduledEnd: DateTime!
+  scheduledStart: DateTime!
+  startedAt: DateTime
+  status: PlanStatus!
+  title: String!
+  userId: String!
+}
+
+type PlanConnection {
+  edges: [PlanEdge!]!
+  pageInfo: PlanPageInfo!
+}
+
+type PlanEdge {
+  cursor: Int!
+  node: PlanForwardDetails!
+}
+
+type PlanForwardDetails {
+  bots: [BotForwardDetails!]!
+  description: String!
+  endedAt: DateTime
+  id: Int!
+  scheduledEnd: DateTime!
+  scheduledStart: DateTime!
+  startedAt: DateTime
+  status: PlanStatus!
+  title: String!
+  userId: String!
+}
+
+type PlanPageInfo {
+  endCursor: Int
+  hasNextPage: Boolean!
+}
+
+enum PlanStatus {
+  Created
+  Finished
+  Started
+  Stopped
+}
+
+type PnlSnapshot {
+  accUSDPnl: Float!
+  address: String!
+  contractId: Int!
+  dateStr: String!
+  id: Int!
+  kind: PnlSnapshotKind!
+}
+
+type PnlSnapshotDetails {
+  accUSDPnl: Float!
+  address: String!
+  contractId: Int!
+  dateStr: String!
+  histories: [TradeHistory!]!
+  id: Int!
+  kind: PnlSnapshotKind!
+}
+
+type PnlSnapshotDetailsConnection {
+  edges: [PnlSnapshotDetailsEdge!]!
+  pageInfo: PnlSnapshotDetailsPageInfo!
+}
+
+type PnlSnapshotDetailsEdge {
+  cursor: Int!
+  node: PnlSnapshotDetails!
+}
+
+type PnlSnapshotDetailsPageInfo {
+  endCursor: Int
+  hasNextPage: Boolean!
+}
+
+type PnlSnapshotDevDetails {
+  accUSDPnl: Float!
+  address: String!
+  contractId: Int!
+  dateStr: String!
+  histories: [TradeHistory!]!
+  id: Int!
+  kind: PnlSnapshotKind!
+  regression: Regression!
+  statistic: Statistic!
+}
+
+type PnlSnapshotDevDetailsV5 {
+  accUSDPnl: Float!
+  address: String!
+  contractId: Int!
+  dateStr: String!
+  histories: [TradeHistory!]!
+  id: Int!
+  kind: PnlSnapshotKind!
+  score: Float!
+}
+
+type PnlSnapshotInitializedFlag {
+  dateStr: String!
+  id: Int!
+  isInit: Boolean!
+}
+
+enum PnlSnapshotKind {
+  ALL_TIME
+  DAY
+  HALF_YEAR
+  MONTH
+  THREE_DAY
+  THREE_MONTH
+  TWO_DAY
+  TWO_WEEK
+  WEEK
+  YEAR
+}
+
+type Position {
+  address: String!
+  contractId: Int!
+  id: Int!
+  index: Int!
+}
+
+type PositionInfo {
+  address: String!
+  contractId: Int!
+  index: Int!
+}
+
+type Query {
+  allLogs(after: Int, checked: Boolean!, first: Int!, severity: LogSeverity): LogsConnection!
+  findContract(id: Int!): Contract!
+  findStrategy(id: Int!): Strategy
+  findStrategyMetadata(key: String!): StrategyMetadata!
+  getAlertTasks: [TaskBackwardDetails!]!
+  getAllCategories: [TagCategory!]!
+  getAllContracts: [Contract!]!
+  getAllFollowerDetails(contractId: Int!): [FollowerDetail!]!
+  getAllFollowers: [Follower!]!
+  getAllStrategy: [Strategy!]!
+  getAllStrategyMetadata: [StrategyMetadata!]!
+  getAllTags: [Tag!]!
+  getAllUsers: [User!]!
+  getAllWalletAccounts: [WalletAccount!]!
+  getBotsByStatus(after: Int, first: Int!, status: BotStatus!): BotConnection!
+  getDevPnlSnapshots(dateStr: String!, filterParams: ExportFilter!): [PnlSnapshotDevDetails!]!
+  getDevPnlSnapshotsV4(dateStr: String!, filterParams: [ExportFilterV3!]!, ratio: Float!): [PnlSnapshotDevDetails!]!
+  getDevPnlSnapshotsV5(dateStr: String!, filterParams: ExportFilterV5!): [PnlSnapshotDevDetailsV5!]!
+  getLogsSeverityCounts: [SeverityCount!]!
+  getMonthlyDevPnlSnapshots(dateStr: String!, filterParams: ExportFilter!): [TradeHistory!]!
+  getPendingOrders(address: String!, contractId: Int!): [FollowerPendingOrder!]!
+  getPlanById(id: Int!): PlanForwardDetails
+  getPlansByStatus(after: Int, first: Int!, status: PlanStatus!): PlanConnection!
+  getPnlSnapshotInitializedFlag: [PnlSnapshotInitializedFlag!]!
+  getPnlSnapshots(after: Int, contractId: Int!, dateStr: String!, first: Int!, kind: PnlSnapshotKind!): PnlSnapshotDetailsConnection!
+  getPnlSnapshotsByAddress(address: String!, dateStr: String!): [PnlSnapshot!]!
+  getServerTime: ServerTime!
+  getTestingReport(after: Int, first: Int!): TestingReportConnection!
+  getTestingReportV2(after: Int, first: Int!): TestingReportV2Connection!
+  getTestingReportV3(after: Int, first: Int!): TestingReportV3Connection!
+  getTestingReportV4(after: Int, first: Int!): TestingReportV3Connection!
+  getTestingReportV5(after: Int, first: Int!): TestingReportV5Connection!
+  getTradeCollaterals(contractId: Int!): [TradeCollateral!]!
+  getTradeHistories(address: String!, contractId: Int!): [TradeHistory!]!
+  getTradePairs(contractId: Int!): [TradePair!]!
+  getTradeTransactionCounts(addresses: [String!]!, contractIds: [Int!]!): TradeTransactionCount!
+  getTrades(address: String!, contractId: Int!): [FollowerTrade!]!
+  getUserTransactionCounts(inputs: [GetUserTransactionCountsInput!]!): [TradeTransactionCount!]!
+  getWalletAccountByAddress(input: GetUserByAddressInput!): WalletAccount!
+  getWholeCompressedHistories(filterParams: ExportFilter!): WholeCompressedHistories!
+  getWholeCompressedHistoriesV2(filterParams: [ExportFilterV2!]!): WholeCompressedHistories!
+  getWholeCompressedHistoriesV3(filterParams: [ExportFilterV3!]!): WholeCompressedHistories!
+  getWholeCompressedHistoriesV4(filterParams: [ExportFilterV3!]!, isTestnet: Boolean!, ratio: Float!, startDate: String!): WholeCompressedHistories!
+  getWholeCompressedHistoriesV5(filterParams: ExportFilterV5!, isTestnet: Boolean!, ratio: Float!, startDate: String!): WholeCompressedHistories!
+  getWholeResultHistories(filterParams: ExportFilter!): [TradeHistory!]!
+  isPnlSnapshotInitialized(dateStr: String!): PnlSnapshotInitializedFlag
+  isSafeApp: Boolean!
+  systemStatus: Boolean!
+}
+
+type Regression {
+  chi2: Float!
+  intercept: Float!
+  r: Float!
+  r2: Float!
+  rmsd: Float!
+  slope: Float!
+}
+
+type ServerTime {
+  timestamp: Float!
+  timezone: String!
+}
+
+type SeverityCount {
+  counts: Int!
+  severity: LogSeverity!
+}
+
+type Statistic {
+  averageIn: Float!
+  countIn: Int!
+}
+
+type Strategy {
+  collateralBaseline: Int!
+  id: Int!
+  lifeTime: Int!
+  maxCollateral: Int!
+  maxLeverage: Int!
+  minCollateral: Int!
+  minLeverage: Int!
+  params: String!
+  ratio: Float!
+  strategyKey: String!
+}
+
+type StrategyMetadata {
+  description: String!
+  key: String!
+  title: String!
+}
+
+type Subscription {
+  botCreated(userId: String!): [BotBackwardDetails!]!
+  botUpdated(userId: String!): [BotBackwardDetails!]!
+  missionCreated(userId: String!): [MissionBackwardDetails!]!
+  missionUpdated(userId: String!): [MissionBackwardDetails!]!
+  newLog(checked: Boolean!, severity: LogSeverity): Log!
+  planCreated(userId: String!): Plan!
+  planUpdated(userId: String!): Plan!
+  taskCreated(userId: String!): [TaskBackwardDetails!]!
+  taskUpdated(userId: String!): [TaskBackwardDetails!]!
+}
+
+type Tag {
+  categoryId: Int
+  color: String!
+  description: String!
+  id: Int!
+  tag: String!
+  userId: String!
+}
+
+type TagCategory {
+  category: String!
+  description: String!
+  id: Int!
+  userId: String!
+}
+
+input TagCategoryInput {
+  category: String!
+  description: String!
+}
+
+input TagInput {
+  categoryId: Int
+  color: String!
+  description: String!
+  tag: String!
+}
+
+type TaskBackwardDetails {
+  action: Action!
+  actionId: Int!
+  createdAt: DateTime!
+  followerActions: [FollowerActionDetails!]!
+  id: Int!
+  logs: [String!]!
+  mission: MissionBackwardDetails!
+  missionId: Int!
+  status: TaskStatus!
+}
+
+type TaskForwardDetails {
+  action: Action!
+  actionId: Int!
+  createdAt: DateTime!
+  followerActions: [FollowerActionDetails!]!
+  id: Int!
+  logs: [String!]!
+  missionId: Int!
+  status: TaskStatus!
+}
+
+enum TaskStatus {
+  Await
+  Completed
+  Created
+  Failed
+  Initiated
+  Stopped
+}
+
+type TestingReport {
+  avgLoss: Float!
+  avgProfit: Float!
+  bottomAccProfit: Float!
+  calculatedR2: Float!
+  calculatedSlope: Float!
+  closePositionCountsByPnlSnapshotKind: String!
+  id: Int!
+  investedUSD: Float!
+  lossCount: Int!
+  maxLoss: Float!
+  maxProfit: Float!
+  maxR2: Float!
+  maxSlope: Int!
+  minR2: Float!
+  minSlope: Int!
+  peakAccProfit: Float!
+  profitCount: Int!
+  recentTradedDays: Int!
+  totalPositions: Int!
+  totalTasks: Int!
+  totalTraders: Int!
+  totalUSDPnl: Float!
+  totalUniqueTraders: Int!
+  usdPnls: [Float!]!
+}
+
+type TestingReportConnection {
+  edges: [TestingReportEdge!]!
+  pageInfo: TestingReportPageInfo!
+}
+
+type TestingReportEdge {
+  cursor: Int!
+  node: TestingReport!
+}
+
+type TestingReportPageInfo {
+  endCursor: Int
+  hasNextPage: Boolean!
+}
+
+type TestingReportV2 {
+  avgLoss: Float!
+  avgProfit: Float!
+  bottomAccProfit: Float!
+  calculatedR2: Float!
+  calculatedSlope: Float!
+  id: Int!
+  investedUSD: Float!
+  lossCount: Int!
+  maxLoss: Float!
+  maxProfit: Float!
+  maxSlope: Int!
+  minSlope: Int!
+  peakAccProfit: Float!
+  profitCount: Int!
+  r2MinsByPnlSnapshotKind: String!
+  totalPositions: Int!
+  totalTasks: Int!
+  totalTraders: Int!
+  totalUSDPnl: Float!
+  totalUniqueTraders: Int!
+  usdPnls: [Float!]!
+}
+
+type TestingReportV2Connection {
+  edges: [TestingReportV2Edge!]!
+  pageInfo: TestingReportV2PageInfo!
+}
+
+type TestingReportV2Edge {
+  cursor: Int!
+  node: TestingReportV2!
+}
+
+type TestingReportV2PageInfo {
+  endCursor: Int
+  hasNextPage: Boolean!
+}
+
+type TestingReportV3 {
+  avgLoss: Float!
+  avgProfit: Float!
+  bottomAccProfit: Float!
+  calculatedR2: Float!
+  calculatedSlope: Float!
+  id: Int!
+  investedUSD: Float!
+  lossCount: Int!
+  maxCount: Int!
+  maxLoss: Float!
+  maxProfit: Float!
+  maxSize: Int!
+  minCount: Int!
+  minR2: String!
+  minSize: Int!
+  peakAccProfit: Float!
+  profitCount: Int!
+  totalPositions: Int!
+  totalTasks: Int!
+  totalTraders: Int!
+  totalUSDPnl: Float!
+  totalUniqueTraders: Int!
+  usdPnls: [Float!]!
+}
+
+type TestingReportV3Connection {
+  edges: [TestingReportV3Edge!]!
+  pageInfo: TestingReportV3PageInfo!
+}
+
+type TestingReportV3Edge {
+  cursor: Int!
+  node: TestingReportV3!
+}
+
+type TestingReportV3PageInfo {
+  endCursor: Int
+  hasNextPage: Boolean!
+}
+
+type TestingReportV5 {
+  avgLoss: Float!
+  avgProfit: Float!
+  bottomAccProfit: Float!
+  calculatedR2: Float!
+  calculatedSlope: Float!
+  id: Int!
+  investedUSD: Float!
+  lossCount: Int!
+  m: Int!
+  maxLoss: Float!
+  maxProfit: Float!
+  minR2: Float!
+  minScore: Float!
+  n: Int!
+  peakAccProfit: Float!
+  profitCount: Int!
+  totalPositions: Int!
+  totalTasks: Int!
+  totalTraders: Int!
+  totalUSDPnl: Float!
+  totalUniqueTraders: Int!
+  usdPnls: [Float!]!
+  window: Int!
+}
+
+type TestingReportV5Connection {
+  edges: [TestingReportV5Edge!]!
+  pageInfo: TestingReportV5PageInfo!
+}
+
+type TestingReportV5Edge {
+  cursor: Int!
+  node: TestingReportV5!
+}
+
+type TestingReportV5PageInfo {
+  endCursor: Int
+  hasNextPage: Boolean!
+}
+
+type TotalBot {
+  address: String!
+  contractId: Int!
+  dateStr: String!
+}
+
+enum TradeActionType {
+  TradeClosedLIQ
+  TradeClosedMarket
+  TradeClosedSL
+  TradeClosedTP
+  TradeLeverageUpdate
+  TradeOpenedLimit
+  TradeOpenedMarket
+  TradePosSizeDecrease
+  TradePosSizeIncrease
+}
+
+type TradeCollateral {
+  collateral: String!
+  collateralIndex: Int!
+  isActive: Boolean!
+  precision: String!
+  precisionDelta: String!
+}
+
+type TradeHistory {
+  action: TradeActionType!
+  address: String!
+  block: Int!
+  collateralDelta: String
+  collateralIndex: Int!
+  collateralPriceUsd: String!
+  contractId: Int!
+  date: DateTime!
+  id: Int!
+  leverage: Int!
+  leverageDelta: Int
+  long: Int!
+  marketPrice: String
+  pair: String!
+  pnl: String!
+  price: String!
+  size: String!
+  tradeId: String
+  tradeIndex: Int!
+}
+
+type TradePair {
+  from: String!
+  pairIndex: Int!
+  to: String!
+}
+
+type TradeTransactionCount {
+  daily: Int!
+  monthly: Int!
+  weekly: Int!
+}
+
+input UpdatePlanInput {
+  description: String
+  endedAt: DateTime
+  id: Int!
+  scheduledEnd: DateTime
+  scheduledStart: DateTime
+  startedAt: DateTime
+  status: PlanStatus!
+  title: String
+}
+
+type User {
+  address: String!
+  allowAuto: Boolean!
+  budget: Float!
+  followerContractId: Int!
+  permission: UserPermission!
+  ratio: Float!
+}
+
+enum UserPermission {
+  Admin
+  Trader
+  Trial
+}
+
+type WalletAccount {
+  address: String!
+  id: Int!
+  tags: [Tag!]!
+  userId: String!
+}
+
+type WholeCompressedHistories {
+  accPnls: [AccPnl!]!
+  actionTypeCount: String
+  botCounts: [BotCount!]!
+  maxInvested: Float!
+  totalBots: [TotalBot!]!
+  uniqueTraders: [String!]
+}
+
+input WithdrawAllInput {
+  address: String!
+  contractId: Int!
+}
