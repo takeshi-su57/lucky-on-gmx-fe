@@ -5,54 +5,22 @@ import { usePathname } from "next/navigation";
 import { Listbox, ListboxItem } from "@heroui/react";
 import { twMerge } from "tailwind-merge";
 
-export const links = [
-  { id: "plans", label: "Plan", title: "" },
-  {
-    id: "automations",
-    label: "Automation",
-    title: "",
-  },
-  {
-    id: "followers",
-    label: "Follower",
-    title: "",
-    showDivider: true,
-  },
-  {
-    id: "leaderboards",
-    label: "Leaderboard",
-    title: "",
-    limited: "Public",
-  },
-  {
-    id: "settings",
-    label: "Setting",
-    title: "",
-    limited: "Public",
-    showDivider: true,
-  },
-  {
-    id: "traders",
-    label: "Trader",
-    title: "",
-    isDevMode: true,
-  },
-  {
-    id: "tags",
-    label: "Tag",
-    title: "",
-    showDivider: true,
-    isDevMode: true,
-  },
-  {
-    id: "logs",
-    label: "Log",
-    title: "",
-    isDevMode: true,
-  },
-];
+export type LinkItem = {
+  id: string;
+  label: string;
+  title?: string;
+  limited?: string;
+  showDivider?: boolean;
+  isDevMode?: boolean;
+};
 
-export function Sidebar({ suffix }: { suffix: string }) {
+export function Sidebar({
+  suffix,
+  links,
+}: {
+  suffix: string;
+  links: LinkItem[];
+}) {
   const pathname = usePathname();
 
   return (
