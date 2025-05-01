@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import {HeroUIProvider} from "@heroui/react";
+import { HeroUIProvider } from "@heroui/react";
 import {
   getDefaultConfig,
   RainbowKitProvider,
@@ -28,10 +28,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import {
-  getMainDefinition,
-  relayStylePagination,
-} from "@apollo/client/utilities";
+import { getMainDefinition } from "@apollo/client/utilities";
 import { createClient } from "graphql-ws";
 
 import "@rainbow-me/rainbowkit/styles.css";
@@ -64,10 +61,10 @@ const wsLink = new GraphQLWsLink(
     },
     shouldRetry: () => true,
     // connectionParams: () => {
-      // const userJWTStr = localStorage.getItem(LOCAL_USER_JWT_KEY);
-      // return {
-      //   authToken: userJWTStr ? `${JSON.parse(userJWTStr)}` : "",
-      // };
+    // const userJWTStr = localStorage.getItem(LOCAL_USER_JWT_KEY);
+    // return {
+    //   authToken: userJWTStr ? `${JSON.parse(userJWTStr)}` : "",
+    // };
     // },
   }),
 );
@@ -100,11 +97,8 @@ const authLink = setContext((_, { headers }) => {
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {
-      fields: {
-       
-      },
+      fields: {},
     },
-
   },
 });
 
